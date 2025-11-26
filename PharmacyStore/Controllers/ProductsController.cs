@@ -34,12 +34,16 @@ namespace PharmacyStore.Controllers
         // Ai cũng xem được chi tiết
         public ActionResult Details(int? id)
         {
-            // ... code cũ giữ nguyên ...
-            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            var p = db.Products.Include(x => x.Category).FirstOrDefault(x => x.ProductId == id);
-            if (p == null) return HttpNotFound();
-            return View(p);
+            if (!id.HasValue)
+                return RedirectToAction("Index");   // Không có id thì quay về danh sách
+
+            var product = db.Products.Find(id.Value);
+            if (product == null)
+                return HttpNotFound();
+
+            return View(product);
         }
+
 
         public ActionResult QuickView(int id)
         {

@@ -1,0 +1,23 @@
+﻿@model PharmacyStore.Models.Product
+
+<div class="col-md-3 col-sm-4 col-6 mb-4">
+    <div class="card h-100 shadow-sm">
+
+        <!--  BỌC HÌNH + TÊN + GIÁ TRONG <a> -->
+        <a href="@Url.Action("Details", "Products", new { id = Model.ProductId })"
+           class="text-decoration-none text-dark"
+           style="display:block; cursor:pointer;">
+
+            <img src="@Model.ImageUrl" class="card-img-top img-fluid" alt="@Model.Name" />
+
+            <div class="card-body">
+                <h6 class="card-title">@Model.Name</h6>
+                <p class="card-text mb-0 fw-bold text-danger">
+                    @Model.Price.ToString("N0") đ
+                </p>
+            </div>
+
+        </a>
+
+    </div>
+</div>

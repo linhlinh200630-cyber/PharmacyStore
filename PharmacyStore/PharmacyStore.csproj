@@ -283,6 +283,7 @@
     <Content Include="Views\Category\ChamSocCaNhan.cshtml" />
     <Content Include="Views\Category\ThietBiYTe.cshtml" />
     <Content Include="Views\Category\TiemChung.cshtml" />
+    <Content Include="Views\Products\_ProductCard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

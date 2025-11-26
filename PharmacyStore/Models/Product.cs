@@ -19,6 +19,6 @@ namespace PharmacyStore.Models
         [NotMapped]
         public HttpPostedFileBase Upload { get; set; }
         public virtual ICollection<ProductTag> ProductTags { get; set; } = new List<ProductTag>();
-
+     
     }
 }

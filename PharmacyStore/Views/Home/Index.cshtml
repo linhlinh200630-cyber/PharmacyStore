@@ -578,33 +578,51 @@
                 <div class="fs-nav fs-prev d-none d-md-block">
                     <button id="fs_prev" class="btn d-inline-flex align-items-center justify-content-center"><i class="bi bi-chevron-left"></i></button>
                 </div>
-
                 <div id="fs_scroller" class="fs-scroller">
                     @foreach (var p in flash)
                     {
                         var img = Url.Action("Img", "Home", new { file = p.ImageUrl ?? "salebanner.jpg" });
                         var oldPrice = p.Price + 100000m;
                         var discount = oldPrice > 0 ? (int)Math.Round((oldPrice - p.Price) / oldPrice * 100) : 0;
+
                         <div class="fs-card">
                             <div class="position-relative img">
-                                <img src="@img" alt="@p.Name" onerror="this.src='@Url.Content("~/Content/img/salebanner.jpg")';" />
+                                <img src="@img"
+                                     alt="@p.Name"
+                                     onerror="this.src='@Url.Content("~/Content/img/salebanner.jpg")';" />
                                 @if (discount > 0)
-                                {<span class="fs-badge">-@discount%</span>}
+                                {
+                                    <span class="fs-badge">-@discount%</span>
+                                }
                             </div>
+
                             <div class="fs-body">
-                                <div class="fs-name">@p.Name</div>
+                                <!-- TÊN LÀ LINK TỚI TRANG CHI TIẾT -->
+                                <a href="@Url.Action("Details", "Products", new { id = p.ProductId })"
+                                   class="fs-name text-decoration-none text-dark"
+                                   style="display:block; cursor:pointer;">
+                                    @p.Name
+                                </a>
+
                                 <div class="d-flex align-items-baseline gap-2">
-                                    <div class="fs-price-new">@String.Format("{0:N0}₫", p.Price)</div>
-                                    <div class="fs-price-old">@String.Format("{0:N0}₫", oldPrice)</div>
+                                    <div class="fs-price-new">
+                                        @p.Price.ToString("N0") đ
+                                    </div>
+                                    <div class="fs-price-old">
+                                        @oldPrice.ToString("N0") đ
+                                    </div>
                                 </div>
+
+                                <!-- Nút này vẫn thêm vào giỏ như cũ -->
                                 <a class="btn btn-primary w-100 mt-2"
-                                   href="@Url.Action("Add","Cart", new { id = p.ProductId, qty = 1, returnUrl = Request.RawUrl })">
+                                   href="@Url.Action("Add", "Cart", new { id = p.ProductId, qty = 1, returnUrl = Request.RawUrl })">
                                     Chọn sản phẩm
                                 </a>
                             </div>
                         </div>
                     }
                 </div>
+
 
                 <div class="fs-nav fs-next d-none d-md-block">
                     <button id="fs_next" class="btn d-inline-flex align-items-center justify-content-center"><i class="bi bi-chevron-right"></i></button>
@@ -631,12 +649,22 @@
                         var img = Url.Action("Img", "Home", new { file = p.ImageUrl ?? "promoA.jpg" });
                         <div class="np-card">
                             <div class="img">
-                                <img src="@img" alt="@p.Name" onerror="this.src='@Url.Action("Img","Home", new { file="no-image.png" })';" />
+                                <img src="@img" alt="@p.Name"
+                                     onerror="this.src='@Url.Action("Img","Home", new { file="no-image.png" })';" />
                             </div>
+
                             <div class="np-body">
-                                <div class="np-name">@p.Name</div>
+
+                                <!-- TÊN SẢN PHẨM → LINK TỚI TRANG DETAILS -->
+                                <a href="@Url.Action("Details", "Products", new { id = p.ProductId })"
+                                   class="np-name text-decoration-none text-dark"
+                                   style="display:block; cursor:pointer;">
+                                    @p.Name
+                                </a>
+
                                 <div class="np-price">@String.Format("{0:N0}₫", p.Price)</div>
                                 <div class="np-unit">@p.Unit</div>
+
                                 <a class="btn btn-primary w-100 mt-2"
                                    href="@Url.Action("Add","Cart", new { id = p.ProductId, qty = 1, returnUrl = Request.RawUrl })">
                                     Chọn sản phẩm
@@ -645,6 +673,7 @@
                         </div>
                     }
                 </div>
+
 
                 <div class="np-nav np-next d-none d-md-block">
                     <button id="np_next" class="btn d-inline-flex align-items-center justify-content-center"><i class="bi bi-chevron-right"></i></button>
@@ -670,16 +699,28 @@
                     {
                         var img = Url.Action("Img", "Home", new { file = p.ImageUrl ?? "promoB.jpg" });
                         var oldPrice = p.Price * 1.12m;
+
                         <div class="bs-card">
                             <div class="img">
-                                <img src="@img" alt="@p.Name" onerror="this.src='@Url.Content("~/Content/img/promoB.jpg")';" />
+                                <img src="@img"
+                                     alt="@p.Name"
+                                     onerror="this.src='@Url.Content("~/Content/img/promoB.jpg")';" />
                             </div>
+
                             <div class="bs-body">
-                                <div class="bs-name">@p.Name</div>
+
+                                <!-- TÊN → LINK TỚI TRANG CHI TIẾT -->
+                                <a href="@Url.Action("Details", "Products", new { id = p.ProductId })"
+                                   class="bs-name text-decoration-none text-dark"
+                                   style="display:block; cursor:pointer;">
+                                    @p.Name
+                                </a>
+
                                 <div class="d-flex justify-content-center gap-2 align-items-baseline">
                                     <div class="bs-price-now">@String.Format("{0:N0}₫", p.Price)</div>
                                     <small class="bs-price-old">@String.Format("{0:N0}₫", oldPrice)</small>
                                 </div>
+
                                 <a class="btn btn-outline-primary w-100 mt-2"
                                    href="@Url.Action("Add", "Cart", new { id = p.ProductId, qty = 1, returnUrl = Request.RawUrl })">
                                     Chọn sản phẩm
@@ -688,6 +729,7 @@
                         </div>
                     }
                 </div>
+
 
                 <div class="bs-nav bs-next d-none d-md-block">
                     <button id="bs_next" class="btn d-inline-flex align-items-center justify-content-center"><i class="bi bi-chevron-right"></i></button>
