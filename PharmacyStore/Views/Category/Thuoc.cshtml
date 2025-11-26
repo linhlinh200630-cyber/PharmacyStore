@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Thuốc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white p-2 rounded">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Thuốc</li>
+        </ol>
+    </nav>
+
+    <h2 class="fw-bold mb-4">Thuốc</h2>
+
+    <div class="row text-center">
+
+        <div class="col-md-3 mb-4">
+            <a href="#" style="text-decoration:none;color:black;">
+                <img src="https://via.placeholder.com/220"
+                     class="img-fluid rounded-circle mb-3" />
+                <h5>Thuốc không kê đơn</h5>
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <a href="#" style="text-decoration:none;color:black;">
+                <img src="https://via.placeholder.com/220"
+                     class="img-fluid rounded-circle mb-3" />
+                <h5>Thuốc kê đơn</h5>
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <a href="#" style="text-decoration:none;color:black;">
+                <img src="https://via.placeholder.com/220"
+                     class="img-fluid rounded-circle mb-3" />
+                <h5>Thuốc khác</h5>
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <a href="@Url.Action("ThucPhamChucNang", "Category")"
+               style="text-decoration:none;color:black;">
+                <img src="https://via.placeholder.com/220"
+                     class="img-fluid rounded-circle mb-3" />
+                <h5>Vitamin & Thực phẩm chức năng</h5>
+            </a>
+        </div>
+
+    </div>
+
+</div>

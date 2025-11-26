@@ -1,0 +1,38 @@
+﻿@model IEnumerable<PharmacyStore.Models.Product>
+@{
+    ViewBag.Title = "Sản phẩm";
+    var q = Request["q"];
+}
+<div class="row">
+    <aside class="col-sm-3 lc-filter">
+        <h4>Bộ lọc</h4>
+        <form method="get">
+            <div class="form-group">
+                <label>Tìm kiếm</label>
+                <input class="form-control" name="q" value="@q" placeholder="Tên sản phẩm..." />
+            </div>
+            <div class="form-group">
+                <label>Khoảng giá</label>
+                <select class="form-control" name="price">
+                    <option value="">Tất cả</option>
+                    <option value="0-100000">Dưới 100k</option>
+                    <option value="100000-300000">100k – 300k</option>
+                    <option value="300000-9999999">Trên 300k</option>
+                </select>
+            </div>
+            <button class="btn btn-lc btn-block">Áp dụng</button>
+        </form>
+    </aside>
+
+    <section class="col-sm-9">
+        <div class="lc-section-head">
+            <h3>@(String.IsNullOrWhiteSpace(q) ? "Tất cả sản phẩm" : "Kết quả cho: " + q)</h3>
+        </div>
+        <div class="row lc-product-grid">
+            @foreach (var p in Model ?? Enumerable.Empty<PharmacyStore.Models.Product>())
+            {
+                @Html.Partial("_ProductCard", p)
+            }
+        </div>
+    </section>
+</div>

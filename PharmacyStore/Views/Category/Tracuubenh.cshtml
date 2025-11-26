@@ -1,0 +1,142 @@
+﻿@{
+    ViewBag.Title = "Tra cứu bệnh";
+}
+
+<h2 class="fw-bold text-primary mb-4">Tra cứu bệnh</h2>
+
+<style>
+    .disease-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .disease-box {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 18px;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        transition: .2s;
+        cursor: pointer;
+    }
+
+        .disease-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .disease-box img {
+            width: 95px;
+            height: 95px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+    .disease-name {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0066ff;
+    }
+
+    .info-box {
+        margin-top: 40px;
+        padding: 25px;
+        border-radius: 16px;
+        background: #f2f7ff;
+        border-left: 6px solid #0066ff;
+        display: none;
+    }
+
+    .info-title {
+        font-size: 26px;
+        font-weight: 800;
+        color: #003f9e;
+    }
+</style>
+
+
+<div class="disease-grid">
+
+    <div class="disease-box" onclick="showInfo('Bệnh Phổi Tắc Nghẽn', 'Khó thở, ho kéo dài, thường gặp ở người hút thuốc.')">
+        <img src="~/Image/benh1.png" />
+        <span class="disease-name">Bệnh Phổi Tắc Nghẽn</span>
+    </div>
+
+    <div class="disease-box" onclick="showInfo('Trào Ngược Dạ Dày', 'Đau tức ngực, nóng rát, ợ chua khi ăn no.')">
+        <img src="~/Image/benh2.png" />
+        <span class="disease-name">Trào Ngược Dạ Dày</span>
+    </div>
+
+    <div class="disease-box" onclick="showInfo('Bệnh Sởi', 'Phát ban đỏ, sốt cao, dễ lây lan.')">
+        <img src="~/Image/benh3.png" />
+        <span class="disease-name">Bệnh Sởi</span>
+    </div>
+
+    <div class="disease-box" onclick="showInfo('Đau Mắt Đỏ', 'Mắt đỏ, chảy nước mắt, đau rát.')">
+        <img src="~/Image/benh4.png" />
+        <span class="disease-name">Đau Mắt Đỏ</span>
+    </div>
+
+    <div class="disease-box" onclick="showInfo('Bệnh Cúm', 'Ho, sốt, đau người, dễ lây.')">
+        <img src="~/Image/benh5.png" />
+        <span class="disease-name">Bệnh Cúm</span>
+    </div>
+
+    <div class="disease-box" onclick="showInfo('Sốt Phát Ban', 'Nổi ban đỏ, sốt cao, thường gặp trẻ.')">
+        <img src="~/Image/benh6.png" />
+        <span class="disease-name">Sốt Phát Ban</span>
+    </div>
+
+    <div class="disease-box" onclick="showInfo('Bệnh Dị Ứng', 'Ngứa, nổi mẩn đỏ, phù nề.')">
+        <img src="~/Image/benh7.png" />
+        <span class="disease-name">Bệnh Dị Ứng</span>
+    </div>
+
+    <div class="disease-box" onclick="showInfo('Đau Cơ Xương Khớp', 'Đau nhức, khó vận động.')">
+        <img src="~/Image/benh8.png" />
+        <span class="disease-name">Đau Cơ Xương Khớp</span>
+    </div>
+
+    <div class="disease-box" onclick="showInfo('Viêm Họng Cấp', 'Đau rát họng, ho, sốt.')">
+        <img src="~/Image/benh9.png" />
+        <span class="disease-name">Viêm Họng Cấp</span>
+    </div>
+
+    <div class="disease-box" onclick="showInfo('Tay Chân Miệng', 'Nổi mụn nước ở miệng, tay và chân.')">
+        <img src="~/Image/benh10.png" />
+        <span class="disease-name">Tay Chân Miệng</span>
+    </div>
+
+    <div class="disease-box" onclick="showInfo('Viêm Phế Quản', 'Ho có đờm, khó thở.')">
+        <img src="~/Image/benh11.png" />
+        <span class="disease-name">Viêm Phế Quản</span>
+    </div>
+
+    <div class="disease-box" onclick="showInfo('Viêm Xoang', 'Nghẹt mũi, đau đầu, chảy dịch.')">
+        <img src="~/Image/benh12.png" />
+        <span class="disease-name">Viêm Xoang</span>
+    </div>
+
+</div>
+
+
+<div id="infoBox" class="info-box">
+    <h3 id="infoTitle" class="info-title"></h3>
+    <p id="infoContent" style="font-size:18px; margin-top:10px;"></p>
+</div>
+
+<script>
+    function showInfo(title, content) {
+        document.getElementById("infoTitle").innerText = title;
+        document.getElementById("infoContent").innerText = content;
+        document.getElementById("infoBox").style.display = "block";
+
+        window.scrollTo({
+            top: document.getElementById("infoBox").offsetTop - 80,
+            behavior: "smooth"
+        });
+    }
+</script>

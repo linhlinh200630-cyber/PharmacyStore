@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Tiêm chủng";
+}
+
+<h2 class="mt-4 mb-4 fw-bold">Tiêm chủng</h2>
+
+<style>
+    .vacc-box {
+        background: #fff;
+        border-radius: 14px;
+        padding: 18px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        cursor: pointer;
+        transition: .25s;
+        text-decoration: none !important;
+    }
+
+        .vacc-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+        }
+
+        .vacc-box img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+    .vacc-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #007bff;
+        margin: 0;
+    }
+</style>
+
+<div class="container">
+    <div class="row g-4">
+
+        <!-- Vaccine trẻ em -->
+        <div class="col-md-6">
+            <a href="#" class="vacc-box">
+                <img src="https://cdn.youmed.vn/tin-tuc/wp-content/uploads/2021/07/vaccine-tre-em.jpg" />
+                <p class="vacc-title">Vaccine trẻ em</p>
+            </a>
+        </div>
+
+        <!-- Vaccine người lớn -->
+        <div class="col-md-6">
+            <a href="#" class="vacc-box">
+                <img src="https://cdn.youmed.vn/tin-tuc/wp-content/uploads/2021/07/vaccine-nguoi-lon.jpg" />
+                <p class="vacc-title">Vaccine người lớn</p>
+            </a>
+        </div>
+
+        <!-- Vaccine cúm -->
+        <div class="col-md-6">
+            <a href="#" class="vacc-box">
+                <img src="https://cdn.youmed.vn/tin-tuc/wp-content/uploads/2021/12/vaccine-cum.jpg" />
+                <p class="vacc-title">Vaccine cúm</p>
+            </a>
+        </div>
+
+        <!-- Vaccine viêm gan B -->
+        <div class="col-md-6">
+            <a href="#" class="vacc-box">
+                <img src="https://cdn.youmed.vn/tin-tuc/wp-content/uploads/2021/08/vaccine-viem-gan-b.jpeg" />
+                <p class="vacc-title">Vaccine viêm gan B</p>
+            </a>
+        </div>
+
+        <!-- Vaccine HPV -->
+        <div class="col-md-6">
+            <a href="#" class="vacc-box">
+                <img src="https://cdn.youmed.vn/tin-tuc/wp-content/uploads/2022/06/vaccine-hpv.jpg" />
+                <p class="vacc-title">Vaccine HPV</p>
+            </a>
+        </div>
+
+        <!-- Vaccine Covid-19 -->
+        <div class="col-md-6">
+            <a href="#" class="vacc-box">
+                <img src="https://cdn.youmed.vn/tin-tuc/wp-content/uploads/2021/10/vaccine-covid19.jpg" />
+                <p class="vacc-title">Vaccine Covid-19</p>
+            </a>
+        </div>
+
+    </div>
+</div>

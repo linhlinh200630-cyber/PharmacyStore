@@ -1,0 +1,837 @@
+﻿@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Slides & promo
+    var slides = (IEnumerable<string>)ViewBag.Slides ?? new[] { "salebanner.jpg" };
+    var promoAUrl = Url.Action("Img", "Home", new { file = (string)ViewBag.PromoA ?? "promoA.jpg" });
+    var promoBUrl = Url.Action("Img", "Home", new { file = (string)ViewBag.PromoB ?? "promoB.jpg" });
+
+    // DỮ LIỆU TỪ CONTROLLER
+    var flash = ViewBag.FlashSale as IEnumerable<PharmacyStore.Models.Product> ?? new List<PharmacyStore.Models.Product>();
+    var newProducts = ViewBag.NewProducts as IEnumerable<PharmacyStore.Models.Product> ?? new List<PharmacyStore.Models.Product>();
+    var best = ViewBag.BestProducts as IEnumerable<PharmacyStore.Models.Product> ?? new List<PharmacyStore.Models.Product>();
+
+    // Countdown flash sale
+    var saleEnd = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59);
+}
+
+<style>
+    /* CHUNG */
+    .object-cover {
+        object-fit: cover;
+    }
+
+    .pc-card {
+        border-radius: 12px;
+    }
+
+    .hero-carousel img {
+        height: 360px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    .carousel-indicators [data-bs-target] {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+    }
+
+    /* THANH CHỮ CHẠY */
+    .promo-ticker {
+        background: #fff;
+        border: 1px solid #ff3b3b;
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-weight: 700;
+        font-size: 15px;
+        color: #d80000;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        margin-top: 20px;
+        margin-bottom: 8px;
+        overflow: hidden;
+    }
+
+        .promo-ticker marquee {
+            color: #c10000;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+    /* FLASH SALE */
+    .fs-wrap {
+        background: linear-gradient(180deg,#ff3b3b 0%,#e62e2e 100%);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .fs-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #fff;
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(255,255,255,.2);
+    }
+
+    .fs-title {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-weight: 800;
+        font-size: 22px;
+    }
+
+    .fs-count .box {
+        display: inline-block;
+        background: #111;
+        color: #fff;
+        border-radius: 6px;
+        padding: 4px 8px;
+        min-width: 36px;
+        text-align: center;
+    }
+
+    .fs-row {
+        position: relative;
+    }
+
+    .fs-scroller {
+        overflow-x: auto;
+        white-space: nowrap;
+        scroll-behavior: smooth;
+        padding-bottom: 6px;
+    }
+
+    .fs-card {
+        display: inline-block;
+        vertical-align: top;
+        width: 240px;
+        background: #fff;
+        border-radius: 12px;
+        margin-right: 12px;
+        box-shadow: 0 8px 18px rgba(0,0,0,.08);
+    }
+
+        .fs-card .img {
+            height: 170px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            overflow: hidden;
+        }
+
+            .fs-card .img img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+    .fs-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: #ffea00;
+        color: #b00000;
+        font-weight: 800;
+        border-radius: 6px;
+        padding: 4px 6px;
+        font-size: 12px;
+    }
+
+    .fs-body {
+        padding: 12px;
+    }
+
+    .fs-name {
+        height: 44px;
+        overflow: hidden;
+        font-weight: 600;
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .fs-price-new {
+        color: #e02020;
+        font-weight: 800;
+    }
+
+    .fs-price-old {
+        color: #888;
+        text-decoration: line-through;
+        font-size: .9rem;
+    }
+
+    .fs-nav {
+        position: absolute;
+        top: 40%;
+        transform: translateY(-50%);
+        z-index: 3;
+    }
+
+    .fs-prev {
+        left: -12px;
+    }
+
+    .fs-next {
+        right: -12px;
+    }
+
+    .fs-nav .btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        box-shadow: 0 6px 16px rgba(0,0,0,.2);
+        background: #fff;
+    }
+
+    /* SẢN PHẨM MỚI & BEST SELLER CHUNG STYLE */
+    .np-wrap {
+        background: linear-gradient(180deg,#f7faff 0%,#eef5ff 100%);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .bs-wrap {
+        background: linear-gradient(180deg,#e9f3ff 0%,#d5e8ff 100%);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .np-head, .bs-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+    }
+
+    .np-title, .bs-title {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-weight: 800;
+        font-size: 22px;
+        color: #0a57de;
+    }
+
+    .np-row, .bs-row {
+        position: relative;
+    }
+
+    .np-scroller, .bs-scroller {
+        overflow-x: auto;
+        white-space: nowrap;
+        scroll-behavior: smooth;
+        padding: 0 4px 10px;
+    }
+
+    .np-card, .bs-card {
+        display: inline-block;
+        vertical-align: top;
+        width: 220px;
+        background: #fff;
+        border-radius: 12px;
+        margin: 0 8px;
+        box-shadow: 0 8px 18px rgba(0,0,0,.06);
+    }
+
+        .np-card .img, .bs-card .img {
+            height: 150px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            overflow: hidden;
+        }
+
+            .np-card .img img, .bs-card .img img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+    .np-body, .bs-body {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .np-name, .bs-name {
+        height: 40px;
+        overflow: hidden;
+        font-weight: 600;
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .np-price, .bs-price-now {
+        color: #e02020;
+        font-weight: 800;
+    }
+
+    .np-unit {
+        color: #777;
+        font-size: .9rem;
+    }
+
+    .bs-price-old {
+        color: #888;
+        text-decoration: line-through;
+        font-size: .9rem;
+    }
+
+    .np-nav, .bs-nav {
+        position: absolute;
+        top: 40%;
+        transform: translateY(-50%);
+        z-index: 3;
+    }
+
+    .np-prev, .bs-prev {
+        left: -12px;
+    }
+
+    .np-next, .bs-next {
+        right: -12px;
+    }
+
+    .np-nav .btn, .bs-nav .btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 6px 16px rgba(0,0,0,.18);
+    }
+
+    /* QUICK ACTIONS */
+    .quick-action-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+        padding: 20px 10px;
+        transition: all 0.25s ease-in-out;
+        border: 1px solid #eef2ff;
+    }
+
+        .quick-action-card i {
+            font-size: 2rem;
+            color: #0a57de;
+            transition: all 0.25s ease-in-out;
+        }
+
+        .quick-action-card .label {
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #223;
+        }
+
+        .quick-action-card:hover {
+            background: linear-gradient(135deg, #e9f3ff 0%, #f8fbff 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(10, 87, 222, 0.15);
+        }
+
+            .quick-action-card:hover i {
+                color: #0056d6;
+                transform: scale(1.15);
+            }
+
+    /* --- CSS CARD BỆNH (KIỂU BONG BÓNG/TOOLTIP) --- */
+    .disease-card {
+        position: relative;
+        overflow: visible !important; /* QUAN TRỌNG: Để bong bóng bay ra ngoài */
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid #eee;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        height: 90px;
+        display: flex;
+        align-items: center;
+        z-index: 1;
+    }
+        /* Khi rê chuột thì hiện lên trên cùng */
+        .disease-card:hover {
+            transform: translateY(-3px);
+            border-color: #0d6efd;
+            z-index: 100;
+        }
+
+    .disease-content {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .disease-img {
+        width: 70px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+
+    .disease-title {
+        font-weight: 700;
+        font-size: 14px;
+        color: #0d6efd;
+        line-height: 1.3;
+    }
+
+    /* KHUNG MÔ TẢ (Dạng bong bóng bay lên) */
+    .disease-info {
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        bottom: 105%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        width: 240px;
+        background-color: #333; /* Màu nền tối */
+        color: #fff;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+        /* Mũi tên tam giác dưới bong bóng */
+        .disease-info::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+
+    .disease-card:hover .disease-info {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    /* FOOTER & INFO */
+    .infobar {
+        background: #f6fbff;
+        border-radius: 12px;
+        padding: 14px 18px;
+        margin-top: 28px;
+    }
+
+        .infobar .item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+            .infobar .item i {
+                font-size: 22px;
+                color: #0a57de;
+            }
+
+        .infobar .tit {
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .infobar .sub {
+            margin: 0;
+            color: #446;
+        }
+
+    .mega-footer {
+        background: #f1f6ff;
+        border-top: 2px solid #0a57de;
+        margin-top: 28px;
+    }
+
+    .mf-col h6 {
+        font-weight: 800;
+        color: #0a57de;
+    }
+
+    .mf-col a {
+        display: block;
+        color: #223;
+        text-decoration: none;
+        margin: .25rem 0;
+    }
+
+        .mf-col a:hover {
+            color: #0a57de;
+            text-decoration: underline;
+        }
+
+    .mf-badges img {
+        height: 40px;
+    }
+
+    .mf-legal {
+        font-size: .9rem;
+        color: #556;
+    }
+</style>
+
+<main class="container my-4">
+    <div class="row g-3">
+        <div class="col-lg-8">
+            <div id="heroCarousel" class="carousel slide hero-carousel shadow-sm" data-bs-ride="carousel" data-bs-interval="3000">
+                <div class="carousel-indicators">
+                    @for (int i = 0; i < slides.Count(); i++)
+                    {
+                        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i" class="@(i==0?"active":"")"></button>
+                    }
+                </div>
+                <div class="carousel-inner">
+                    @{
+                        var idx = 0;
+                        foreach (var f in slides)
+                        {
+                            var imgUrl = Url.Action("Img", "Home", new { file = f });
+                            <div class="carousel-item @(idx==0?"active":"")">
+                                <img src="@imgUrl" class="d-block w-100" alt="slide @(idx+1)">
+                            </div>;
+                            idx++;
+                        }
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card pc-card shadow-sm mb-3">
+                <img src="@promoAUrl" class="card-img-top object-cover" style="height:170px" alt="Promo A" />
+            </div>
+            <div class="card pc-card shadow-sm">
+                <img src="@promoBUrl" class="card-img-top object-cover" style="height:170px" alt="Promo B" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 text-center mt-4">
+        <div class="col-6 col-md-3">
+            <div class="quick-action-card">
+                <i class="bi bi-chat-dots"></i>
+                <div class="label">Tư vấn mua thuốc</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="quick-action-card">
+                <i class="bi bi-headset"></i>
+                <div class="label">Liên hệ dược sĩ</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="quick-action-card">
+                <i class="bi bi-geo-alt"></i>
+                <div class="label">Hệ thống nhà thuốc</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="quick-action-card">
+                <i class="bi bi-ticket-detailed"></i>
+                <div class="label">Mã giảm giá</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="promo-ticker">
+        <marquee behavior="scroll" direction="left" scrollamount="7">
+            🔥 Giảm giá sốc trong ngày &nbsp;&nbsp;|&nbsp;&nbsp;
+            💊 100% hàng chính hãng &nbsp;&nbsp;|&nbsp;&nbsp;
+            🚚 Freeship toàn quốc &nbsp;&nbsp;|&nbsp;&nbsp;
+            💬 Tư vấn đúng thuốc, đúng liều &nbsp;&nbsp;|&nbsp;&nbsp;
+            💰 Siêu deal chỉ hôm nay!
+        </marquee>
+    </div>
+
+    <section class="my-4">
+        <div class="fs-wrap p-3">
+            <div class="fs-head">
+                <div class="fs-title"><i class="bi bi-lightning-charge-fill"></i> FLASH SALES</div>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-white text-danger fw-bold">Siêu deal giá tốt</span>
+                    <div class="fs-count">
+                        <span class="box" id="fs_h">00</span> :
+                        <span class="box" id="fs_m">00</span> :
+                        <span class="box" id="fs_s">00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fs-row mt-2">
+                <div class="fs-nav fs-prev d-none d-md-block">
+                    <button id="fs_prev" class="btn d-inline-flex align-items-center justify-content-center"><i class="bi bi-chevron-left"></i></button>
+                </div>
+
+                <div id="fs_scroller" class="fs-scroller">
+                    @foreach (var p in flash)
+                    {
+                        var img = Url.Action("Img", "Home", new { file = p.ImageUrl ?? "salebanner.jpg" });
+                        var oldPrice = p.Price + 100000m;
+                        var discount = oldPrice > 0 ? (int)Math.Round((oldPrice - p.Price) / oldPrice * 100) : 0;
+                        <div class="fs-card">
+                            <div class="position-relative img">
+                                <img src="@img" alt="@p.Name" onerror="this.src='@Url.Content("~/Content/img/salebanner.jpg")';" />
+                                @if (discount > 0)
+                                {<span class="fs-badge">-@discount%</span>}
+                            </div>
+                            <div class="fs-body">
+                                <div class="fs-name">@p.Name</div>
+                                <div class="d-flex align-items-baseline gap-2">
+                                    <div class="fs-price-new">@String.Format("{0:N0}₫", p.Price)</div>
+                                    <div class="fs-price-old">@String.Format("{0:N0}₫", oldPrice)</div>
+                                </div>
+                                <a class="btn btn-primary w-100 mt-2"
+                                   href="@Url.Action("Add","Cart", new { id = p.ProductId, qty = 1, returnUrl = Request.RawUrl })">
+                                    Chọn sản phẩm
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="fs-nav fs-next d-none d-md-block">
+                    <button id="fs_next" class="btn d-inline-flex align-items-center justify-content-center"><i class="bi bi-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-5">
+        <div class="np-wrap p-3">
+            <div class="np-head">
+                <div class="np-title"><i class="bi bi-stars"></i> Sản phẩm mới</div>
+                <a href="#" class="text-decoration-none">Xem thêm &raquo;</a>
+            </div>
+
+            <div class="np-row mt-2">
+                <div class="np-nav np-prev d-none d-md-block">
+                    <button id="np_prev" class="btn d-inline-flex align-items-center justify-content-center"><i class="bi bi-chevron-left"></i></button>
+                </div>
+
+                <div id="np_scroller" class="np-scroller">
+                    @foreach (var p in newProducts)
+                    {
+                        var img = Url.Action("Img", "Home", new { file = p.ImageUrl ?? "promoA.jpg" });
+                        <div class="np-card">
+                            <div class="img">
+                                <img src="@img" alt="@p.Name" onerror="this.src='@Url.Action("Img","Home", new { file="no-image.png" })';" />
+                            </div>
+                            <div class="np-body">
+                                <div class="np-name">@p.Name</div>
+                                <div class="np-price">@String.Format("{0:N0}₫", p.Price)</div>
+                                <div class="np-unit">@p.Unit</div>
+                                <a class="btn btn-primary w-100 mt-2"
+                                   href="@Url.Action("Add","Cart", new { id = p.ProductId, qty = 1, returnUrl = Request.RawUrl })">
+                                    Chọn sản phẩm
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="np-nav np-next d-none d-md-block">
+                    <button id="np_next" class="btn d-inline-flex align-items-center justify-content-center"><i class="bi bi-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-5">
+        <div class="bs-wrap p-3">
+            <div class="bs-head">
+                <div class="bs-title"><i class="bi bi-bar-chart-fill"></i> Top bán chạy</div>
+                <a href="#" class="text-decoration-none">Xem thêm &raquo;</a>
+            </div>
+
+            <div class="bs-row mt-2">
+                <div class="bs-nav bs-prev d-none d-md-block">
+                    <button id="bs_prev" class="btn d-inline-flex align-items-center justify-content-center"><i class="bi bi-chevron-left"></i></button>
+                </div>
+
+                <div id="bs_scroller" class="bs-scroller">
+                    @foreach (var p in best)
+                    {
+                        var img = Url.Action("Img", "Home", new { file = p.ImageUrl ?? "promoB.jpg" });
+                        var oldPrice = p.Price * 1.12m;
+                        <div class="bs-card">
+                            <div class="img">
+                                <img src="@img" alt="@p.Name" onerror="this.src='@Url.Content("~/Content/img/promoB.jpg")';" />
+                            </div>
+                            <div class="bs-body">
+                                <div class="bs-name">@p.Name</div>
+                                <div class="d-flex justify-content-center gap-2 align-items-baseline">
+                                    <div class="bs-price-now">@String.Format("{0:N0}₫", p.Price)</div>
+                                    <small class="bs-price-old">@String.Format("{0:N0}₫", oldPrice)</small>
+                                </div>
+                                <a class="btn btn-outline-primary w-100 mt-2"
+                                   href="@Url.Action("Add", "Cart", new { id = p.ProductId, qty = 1, returnUrl = Request.RawUrl })">
+                                    Chọn sản phẩm
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="bs-nav bs-next d-none d-md-block">
+                    <button id="bs_next" class="btn d-inline-flex align-items-center justify-content-center"><i class="bi bi-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="mt-5 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold"><i class="bi bi-thermometer-sun"></i> Nhóm bệnh theo mùa</h4>
+            <a href="#" class="text-decoration-none">Xem thêm »</a>
+        </div>
+
+        <div class="row g-3">
+            @{
+                // Đã thêm ID vào từng bệnh
+                var diseases = new[] {
+                    new { Id = 1,  Name = "Bệnh Phổi Tắc Nghẽn", File = "phoi.png",          Desc = "Khó thở, ho mãn tính, tăng tiết đờm nhớt." },
+                    new { Id = 2,  Name = "Trào Ngược Dạ Dày",   File = "da day.jpg",        Desc = "Ợ chua, nóng rát ngực, buồn nôn khi ăn." },
+                    new { Id = 3,  Name = "Bệnh Sởi",            File = "soi.jpg",           Desc = "Sốt cao, phát ban đỏ toàn thân, ho, chảy mũi." },
+                    new { Id = 4,  Name = "Đau Mắt Đỏ",          File = "mat.jpg",           Desc = "Mắt đỏ, ngứa, cộm xốn, nhiều ghèn rỉ." },
+                    new { Id = 5,  Name = "Bệnh Cúm",            File = "cum.jpg",           Desc = "Sốt, đau đầu, đau nhức cơ, mệt mỏi." },
+                    new { Id = 6,  Name = "Sốt Phát Ban",        File = "sot.jpg",           Desc = "Sốt nhẹ, nổi nốt đỏ li ti sau khi hạ sốt." },
+                    new { Id = 7,  Name = "Bệnh Dị Ứng",         File = "di ung.jpg",        Desc = "Nổi mề đay, ngứa da, hắt hơi khi đổi mùa." },
+                    new { Id = 8,  Name = "Đau Cơ Xương Khớp",   File = "xuongkhop.jpg",     Desc = "Đau nhức khớp, cứng khớp khi trời lạnh." },
+                    new { Id = 9,  Name = "Viêm Họng Cấp",       File = "viemhong.jpg",      Desc = "Đau rát họng, nuốt vướng, có thể sốt." },
+                    new { Id = 10, Name = "Tay Chân Miệng",      File = "taychanmieng.jpg",  Desc = "Loét miệng, phỏng nước ở lòng bàn tay, chân." },
+                    new { Id = 11, Name = "Viêm Phế Quản",       File = "viemphequan.jpg",   Desc = "Ho khan hoặc có đờm, tức ngực, khò khè." },
+                    new { Id = 12, Name = "Viêm Xoang",          File = "viemxoang.jpg",     Desc = "Đau nhức vùng mặt, nghẹt mũi, chảy dịch." }
+                };
+            }
+
+            @foreach (var item in diseases)
+            {
+                var imgUrl = Url.Action("Img", "Home", new { file = item.File });
+                // Tạo Link chi tiết
+                var detailUrl = Url.Action("Details", "Diseases", new { id = item.Id });
+
+                <div class="col-md-3 col-sm-6">
+                    <a href="@detailUrl" class="text-decoration-none text-dark">
+                        <div class="disease-card">
+                            <div class="disease-content">
+                                <img src="@imgUrl" class="disease-img" alt="@item.Name" onerror="this.src='https://placehold.co/60x60?text=PS'" />
+                                <div class="disease-title">@item.Name</div>
+                            </div>
+                            <div class="disease-info">
+                                <span>@item.Desc</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="container infobar">
+        <div class="row g-3">
+            <div class="col-12 col-md-6 col-lg-3"><div class="item"><i class="bi bi-truck"></i><div><p class="tit">Giao hàng siêu tốc</p><p class="sub">Giao tận nhà hoặc nhận tại nhà thuốc</p></div></div></div>
+            <div class="col-12 col-md-6 col-lg-3"><div class="item"><i class="bi bi-patch-check"></i><div><p class="tit">Đủ thuốc chuẩn</p><p class="sub">Chất lượng, phục vụ tận tâm</p></div></div></div>
+            <div class="col-12 col-md-6 col-lg-3"><div class="item"><i class="bi bi-box-seam"></i><div><p class="tit">Miễn phí vận chuyển</p><p class="sub">Cho mọi đơn hàng toàn quốc*</p></div></div></div>
+            <div class="col-12 col-md-6 col-lg-3"><div class="item"><i class="bi bi-geo-alt"></i><div><p class="tit">Nhà thuốc gần bạn</p><p class="sub">Dễ dàng tìm nhà thuốc lân cận</p></div></div></div>
+        </div>
+    </div>
+
+    <section class="mega-footer">
+        <div class="container py-4">
+            <div class="row g-4">
+                <div class="col-12 col-lg-4 mf-col">
+                    <h6>Về Pharmacy Store</h6>
+                    <a href="#">Giới thiệu</a><a href="#">Hệ thống cửa hàng</a><a href="#">Giấy phép kinh doanh</a>
+                    <a href="#">Chính sách đổi trả & bảo hành</a><a href="#">Chính sách bảo mật</a><a href="#">Câu hỏi thường gặp</a>
+                </div>
+                <div class="col-6 col-lg-2 mf-col">
+                    <h6>Danh mục</h6>
+                    <a href="#">Thuốc</a><a href="#">Thực phẩm chức năng</a><a href="#">Dược mỹ phẩm</a>
+                    <a href="#">Chăm sóc cá nhân</a><a href="#">Thiết bị y tế</a>
+                </div>
+                <div class="col-6 col-lg-3 mf-col">
+                    <h6>Tổng đài miễn cước</h6>
+                    <div class="mb-2"><strong>không có</strong> (Đặt hàng)</div>
+                    <div class="mb-2"><strong>không có</strong> (Thông tin thuốc, khuyến mãi)</div>
+                    <div class="mb-2"><strong>không có</strong> (Khiếu nại, góp ý)</div>
+                    <h6 class="mt-3">Theo dõi chúng tôi</h6>
+                    <div class="d-flex gap-3">
+                        <a href="#"><i class="bi bi-facebook fs-4 text-primary"></i></a>
+                        <a href="#"><i class="bi bi-youtube fs-4 text-danger"></i></a>
+                        <a href="#"><i class="bi bi-chat-dots fs-4 text-info"></i></a>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3 mf-col">
+                    <h6>Tải ứng dụng</h6>
+                    <div class="mf-badges d-flex gap-2 mb-3">
+                        <img src="@Url.Content("~/Content/img/appstore-badge.png")" alt="App Store" onerror="this.style.display='none'">
+                        <img src="@Url.Content("~/Content/img/googleplay-badge.png")" alt="Google Play" onerror="this.style.display='none'">
+                    </div>
+                    <h6>Hỗ trợ thanh toán</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge text-bg-light">COD</span>
+                        <span class="badge text-bg-light">VISA</span>
+                        <span class="badge text-bg-light">Mastercard</span>
+                        <span class="badge text-bg-light">Momo</span>
+                        <span class="badge text-bg-light">ZaloPay</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3" />
+            <div class="mf-legal">
+                <div><strong>Công Ty Cổ Phần Dược Phẩm Nhóm 34</strong></div>
+                <div>Địa chỉ: Lầu 3 Huflit Cơ Sở Hóc Môn • Điện thoại: không có • Email: hỏi nhóm trưởng</div>
+                <div class="mt-2">© 2025 Nhóm 34 Lập Trình Web. Tất cả các quyền thuộc về nhóm 34, nhóm khác CẤM SAO CHÉP.</div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+(() => {
+  // COUNTDOWN
+  const end = new Date('@saleEnd.ToString("yyyy-MM-ddTHH:mm:ss")');
+  const $h = document.getElementById('fs_h'),
+        $m = document.getElementById('fs_m'),
+        $s = document.getElementById('fs_s');
+  const pad = n => (n < 10 ? '0' + n : '' + n);
+  function tick(){
+    const now = new Date();
+    let t = end - now; if (t < 0) t = 0;
+    const hh = Math.floor(t / 36e5);
+    const mm = Math.floor((t % 36e5) / 6e4);
+    const ss = Math.floor((t % 6e4) / 1e3);
+    $h.textContent = pad(hh); $m.textContent = pad(mm); $s.textContent = pad(ss);
+  }
+  tick(); setInterval(tick, 1000);
+
+  // SCROLLERS
+  const pair = (idPrev,idScroller,idNext,step) => {
+    const prev = document.getElementById(idPrev),
+          scroller = document.getElementById(idScroller),
+          next = document.getElementById(idNext);
+    if (prev) prev.onclick = () => scroller.scrollBy({ left: -step, behavior: 'smooth' });
+    if (next) next.onclick = () => scroller.scrollBy({ left:  step, behavior: 'smooth' });
+  };
+  pair('fs_prev','fs_scroller','fs_next',260);
+  pair('np_prev','np_scroller','np_next',240);
+  pair('bs_prev','bs_scroller','bs_next',240);
+})();
+</script>

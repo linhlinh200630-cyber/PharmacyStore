@@ -1,0 +1,59 @@
+﻿@model PharmacyStore.Models.Product
+
+@{
+    // Ảnh: thay ?? bằng kiểm tra chuỗi rỗng
+    var imgUrl = (Model != null && !string.IsNullOrEmpty(Model.ImageUrl))
+                 ? Model.ImageUrl
+                 : Url.Content("~/Content/img/no-image.png");
+
+    // Lấy DiscountPercent an toàn khi Model có/không có property này
+    var discount = 0;
+
+    // Nếu Product có int? DiscountPercent
+    // discount = (Model != null && Model.DiscountPercent.HasValue) ? Model.DiscountPercent.Value : 0;
+
+    // Fallback khi View đang type đến lớp không có property này → dùng reflection
+    var pi = (Model == null) ? null : Model.GetType().GetProperty("DiscountPercent");
+    if (pi != null)
+    {
+        var val = pi.GetValue(Model, null);
+        if (val != null)
+        {
+            int tmp;
+            if (int.TryParse(val.ToString(), out tmp)) { discount = tmp; }
+
+
+
+        }
+    }
+
+    var hasDiscount = discount > 0;
+
+    // Giá
+    decimal price = Model.Price;                 // giá gốc
+    decimal sale = hasDiscount ? price * (100 - discount) / 100m : price; // giá sau giảm
+}
+
+<a href="@Url.Action("Details","Products", new { id = Model.ProductId })" class="lc-thumb">
+    <img src="@imgUrl" alt="@Model.Name" />
+    @if (hasDiscount)
+    {
+        <span class="lc-badge-off">@discount%</span>
+    }
+</a>
+
+<div class="lc-info">
+    <h4 class="lc-name">@Model.Name</h4>
+
+    <div class="lc-price">
+        @if (hasDiscount)
+        {
+            <span class="price-new">@sale.ToString("n0") đ</span>
+            <span class="price-old">@price.ToString("n0") đ</span>
+        }
+        else
+        {
+            <span class="price">@price.ToString("n0") đ</span>
+        }
+    </div>
+</div>

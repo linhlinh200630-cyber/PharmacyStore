@@ -1,0 +1,39 @@
+﻿@model PharmacyStore.Models.Product
+@{
+    ViewBag.Title = Model.Name;
+    var discount = ((Model as dynamic).DiscountPercent ?? 0);
+    var hasDiscount = discount > 0;
+    var price = Model.Price;
+    var sale = hasDiscount ? price * (100 - discount) / 100 : price;
+}
+<div class="row lc-detail">
+    <div class="col-sm-5">
+        <img class="img-responsive lc-detail-img" src="@Model.ImageUrl" alt="@Model.Name" />
+    </div>
+    <div class="col-sm-7">
+        <h1 class="lc-detail-name">@Model.Name</h1>
+        <div class="lc-detail-price">
+            <span class="lc-price-now">@sale.ToString("n0") đ</span>
+            @if (hasDiscount)
+            {<span class="lc-price-old">@price.ToString("n0") đ</span> <span class="lc-off">-@discount%</span>}
+        </div>
+
+        <ul class="lc-detail-meta list-unstyled">
+            <li>Quy cách: @Model.Unit</li>
+            <li>Mã SP: #@Model.ProductId</li>
+            <li>Tình trạng: <b>Còn hàng</b></li>
+        </ul>
+
+        <div class="lc-detail-actions">
+            <a class="btn btn-lc btn-lg" href="@Url.Action("AddToCart","Cart", new { id = Model.ProductId })">
+                <span class="glyphicon glyphicon-shopping-cart"></span> Chọn mua
+            </a>
+            <a class="btn btn-default" href="@Url.Action("Index","Products")">Xem thêm sản phẩm</a>
+        </div>
+
+        <div class="lc-detail-desc">
+            <h4>Mô tả</h4>
+            <p>@Html.Raw(Model.Description ?? "Đang cập nhật…")</p>
+        </div>
+    </div>
+</div>

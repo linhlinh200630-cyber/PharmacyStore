@@ -1,0 +1,93 @@
+﻿@model PharmacyStore.Controllers.DiseasesController.DiseaseModel
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var imgUrl = Url.Action("Img", "Home", new { file = Model.ImageFile });
+}
+
+<style>
+    .disease-header {
+        background-color: #f8f9fa;
+        border-radius: 16px;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        color: #0d6efd; /* Màu xanh chủ đạo */
+        font-weight: 800;
+        margin-bottom: 15px;
+        border-left: 5px solid #0d6efd;
+        padding-left: 15px;
+        text-transform: uppercase;
+        font-size: 1.2rem;
+    }
+
+    .content-box {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+        line-height: 1.8;
+        color: #333;
+        text-align: justify;
+    }
+
+        .content-box ul {
+            padding-left: 20px;
+        }
+
+        .content-box li {
+            margin-bottom: 8px;
+        }
+
+    .disease-main-img {
+        width: 100%;
+        max-height: 400px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="container my-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Thông tin bệnh học</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="disease-header text-center">
+                <h1 class="fw-bold text-primary mb-3">@Model.Name</h1>
+                <div class="text-muted mb-4"><i class="bi bi-calendar-check"></i> Cập nhật lần cuối: @DateTime.Now.ToString("dd/MM/yyyy")</div>
+                <img src="@imgUrl" class="disease-main-img" alt="@Model.Name" onerror="this.src='https://placehold.co/800x400?text=No+Image'" />
+            </div>
+
+            <div class="content-box">
+                <h3 class="section-title">1. Tổng quan chung</h3>
+                <div>
+                    @Html.Raw(Model.Overview.Replace("\n", "<br/>"))
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3 class="section-title">2. Triệu chứng nhận biết</h3>
+                <div>
+                    @Html.Raw(Model.Symptoms.Replace("\n", "<br/>"))
+                </div>
+            </div>
+
+            <div class="content-box border-primary" style="border-left: 1px solid #0d6efd; border-right: 1px solid #0d6efd;">
+                <h3 class="section-title">3. Cách khắc phục & Phòng ngừa</h3>
+                <div class="alert alert-light mb-0">
+                    @Html.Raw(Model.Treatment.Replace("\n", "<br/>"))
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

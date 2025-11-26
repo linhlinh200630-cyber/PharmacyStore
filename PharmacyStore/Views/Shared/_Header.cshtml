@@ -1,0 +1,21 @@
+﻿<header class="lc-header">
+    <div class="container d-flex align-items-center justify-content-between">
+        <a class="lc-logo" href="@Url.Action("Index","Home")">
+            <img src="~/Content/img/logo-lc.svg" alt="PharmacyStore" />
+        </a>
+
+        <form class="lc-search" action="@Url.Action("Index","Products")" method="get">
+            <span class="glyphicon glyphicon-search"></span>
+            <input type="text" name="q" placeholder="Tìm kiếm sản phẩm, hoạt chất..." />
+            <button type="submit" class="btn btn-lc">Tìm</button>
+        </form>
+
+        <div class="lc-actions">
+            <a href="@Url.Action("Login","Account")" class="lc-action"><span class="glyphicon glyphicon-user"></span> Đăng nhập</a>
+            <a href="@Url.Action("Index","Cart")" class="lc-action">
+                <span class="glyphicon glyphicon-shopping-cart"></span> Giỏ hàng
+                <span class="lc-badge">@ViewBag.CartCount ?? 0</span>
+            </a>
+        </div>
+    </div>
+</header>

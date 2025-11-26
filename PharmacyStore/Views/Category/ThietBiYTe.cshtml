@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Thiết bị y tế";
+}
+
+<h2 class="mt-4 mb-4 fw-bold">Thiết bị y tế</h2>
+
+<style>
+    .tb-box {
+        background: #fff;
+        border-radius: 14px;
+        padding: 18px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        cursor: pointer;
+        transition: .25s;
+        text-decoration: none !important;
+    }
+
+        .tb-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+        }
+
+        .tb-box img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+    .tb-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #007bff;
+        margin: 0;
+    }
+</style>
+
+<div class="container">
+    <div class="row g-4">
+
+        <!-- Máy đo huyết áp -->
+        <div class="col-md-6">
+            <a href="#" class="tb-box">
+                <img src="https://cdn.tgdd.vn/Products/Images/6977/228907/may-do-huyet-ap-bap-tay-omron-hem-7121-1-600x600.jpg" />
+                <p class="tb-title">Máy đo huyết áp</p>
+            </a>
+        </div>
+
+        <!-- Máy xông mũi họng -->
+        <div class="col-md-6">
+            <a href="#" class="tb-box">
+                <img src="https://cdn.tgdd.vn/Products/Images/7979/230238/may-xong-mui-hong-microlife-neb100-1-600x600.jpg" />
+                <p class="tb-title">Máy xông mũi họng</p>
+            </a>
+        </div>
+
+        <!-- Nhiệt kế -->
+        <div class="col-md-6">
+            <a href="#" class="tb-box">
+                <img src="https://cdn.tgdd.vn/Products/Images/8966/228905/nhiet-ke-hong-ngoai-do-tran-omron-mc-720-1-600x600.jpg" />
+                <p class="tb-title">Nhiệt kế</p>
+            </a>
+        </div>
+
+        <!-- Máy đo đường huyết -->
+        <div class="col-md-6">
+            <a href="#" class="tb-box">
+                <img src="https://cdn.tgdd.vn/Products/Images/7979/289957/may-do-duong-huyet-omed-2-600x600.jpg" />
+                <p class="tb-title">Máy đo đường huyết</p>
+            </a>
+        </div>
+
+        <!-- Máy massage -->
+        <div class="col-md-6">
+            <a href="#" class="tb-box">
+                <img src="https://cdn.tgdd.vn/Products/Images/9423/289962/may-massage-co-shika-sk-061-1-600x600.jpg" />
+                <p class="tb-title">Máy massage</p>
+            </a>
+        </div>
+
+        <!-- Cân sức khỏe -->
+        <div class="col-md-6">
+            <a href="#" class="tb-box">
+                <img src="https://cdn.tgdd.vn/Products/Images/6988/269944/can-dien-tu-kadeka-kd-bs01-1-600x600.jpg" />
+                <p class="tb-title">Cân sức khỏe</p>
+            </a>
+        </div>
+
+    </div>
+</div>

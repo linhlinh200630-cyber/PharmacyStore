@@ -1,0 +1,22 @@
+﻿@using PharmacyStore.Models
+@{
+    Layout = null;
+
+    var cart = Session["CART"] as Cart;
+    int count = 0;
+    decimal total = 0m;
+
+    if (cart != null && cart.Items != null)
+    {
+        count = cart.Items.Sum(i => i.Quantity);
+        total = cart.Items.Sum(i => i.Price * i.Quantity);
+    }
+}
+
+<a href="@Url.Action("Index","Cart")"
+   class="btn btn-outline-light position-relative ms-2">
+    <i class="bi bi-cart"></i> Giỏ hàng
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        @count
+    </span>
+</a>

@@ -1,0 +1,68 @@
+﻿@model PharmacyStore.Models.Cart
+@{
+    ViewBag.Title = "Giỏ hàng";
+}
+
+<h2>Giỏ hàng</h2>
+
+@if (Model.IsEmpty)
+{
+    <p>Giỏ hàng trống.</p>
+}
+else
+{
+    <form method="post" action="@Url.Action("Update","Cart")">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Sản phẩm</th>
+                    <th class="text-end">Đơn giá</th>
+                    <th style="width:140px">Số lượng</th>
+                    <th class="text-end">Thành tiền</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td style="width:90px">
+                            <img class="img-fluid"
+                                 src="@Url.Action("Img","Home", new { file = item.ImageUrl ?? "no-image.png" })"
+                                 alt="@item.Name" />
+                        </td>
+                        <td>@item.Name</td>
+                        <td class="text-end">@String.Format("{0:0,0}đ", item.Price)</td>
+                        <td>
+                            <input type="hidden" name="id" value="@item.ProductId" />
+                            <input type="number" name="qty" value="@item.Quantity" min="0" class="form-control" />
+                        </td>
+                        <td class="text-end">@String.Format("{0:0,0}đ", item.LineTotal)</td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-danger"
+                               href="@Url.Action("Remove","Cart", new { id = item.ProductId })">
+                                Xóa
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="4" class="text-end">Tổng:</th>
+                    <th class="text-end">@String.Format("{0:0,0}đ", Model.TotalAmount)</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="d-flex gap-2">
+            <button formaction="@Url.Action("Update","Cart")" formmethod="post" class="btn btn-primary">
+                Cập nhật số lượng (dòng đang điền)
+            </button>
+            <a class="btn btn-outline-secondary" href="@Url.Action("Clear","Cart")">Xóa hết</a>
+            <a class="btn btn-success" href="@Url.Action("Checkout","Cart")">Thanh toán</a>
+        </div>
+    </form>
+}

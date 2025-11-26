@@ -1,0 +1,383 @@
+﻿:root {
+    --lc: #0a63ff;
+    --lc2: #0040c2;
+    --green: #0abf6d;
+    --text: #1d2b3a;
+}
+
+body {
+    font-family: Roboto,Arial,Helvetica,sans-serif;
+    color: var(--text);
+    background: #f6f8fb;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+.btn-lc {
+    background: var(--lc);
+    color: #fff;
+    border: none
+}
+
+    .btn-lc:hover {
+        background: var(--lc2);
+        color: #fff
+    }
+
+.btn-lc-block {
+    background: var(--lc);
+    color: #fff;
+    border: none;
+    width: 100%
+}
+
+    .btn-lc-block:hover {
+        background: var(--lc2);
+        color: #fff
+    }
+
+/* Header */
+.lc-header {
+    background: #fff;
+    border-bottom: 1px solid #e8eef7;
+    padding: 10px 0
+}
+
+.lc-logo img {
+    height: 36px
+}
+
+.lc-search {
+    flex: 1;
+    max-width: 650px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #dbe4f0;
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin: 0 16px;
+    background: #fff
+}
+
+    .lc-search input {
+        border: none;
+        outline: none;
+        flex: 1
+    }
+
+.lc-actions {
+    display: flex;
+    gap: 16px
+}
+
+.lc-action {
+    position: relative;
+    color: var(--text)
+}
+
+.lc-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: #ff3b30;
+    color: #fff;
+    border-radius: 12px;
+    padding: 0 6px;
+    font-size: 12px
+}
+
+/* Main nav */
+.lc-mainnav {
+    background: #e9f0ff
+}
+
+.lc-nav {
+    gap: 18px;
+    margin: 0;
+    padding: 10px 0
+}
+
+    .lc-nav a {
+        color: #0a1e44;
+        font-weight: 500
+    }
+
+    .lc-nav.open {
+        display: block
+    }
+
+@media(max-width:767px) {
+    .lc-nav {
+        display: none
+    }
+}
+
+/* Hero */
+.lc-hero {
+    margin: 16px 0
+}
+
+.lc-hero-inner {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden
+}
+
+    .lc-hero-inner img {
+        width: 100%;
+        display: block
+    }
+
+.lc-hero-cta {
+    position: absolute;
+    left: 32px;
+    top: 28px;
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0,0,0,.25)
+}
+
+    .lc-hero-cta .btn {
+        margin-top: 12px
+    }
+
+/* Shortcuts */
+.lc-shortcut {
+    display: block;
+    background: #fff;
+    border: 1px solid #e8eef7;
+    border-radius: 10px;
+    text-align: center;
+    padding: 14px;
+    color: var(--text)
+}
+
+    .lc-shortcut:hover {
+        border-color: var(--lc)
+    }
+
+/* Product card */
+.lc-card {
+    background: #fff;
+    border: 1px solid #e8eef7;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    height: 100%
+}
+
+.lc-thumb {
+    display: block;
+    position: relative;
+    background: #fff
+}
+
+    .lc-thumb img {
+        width: 100%;
+        height: 180px;
+        object-fit: contain;
+        padding: 10px
+    }
+
+.lc-badge-off {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    background: #ff3b30;
+    color: #fff;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 12px
+}
+
+.lc-info {
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px
+}
+
+.lc-name {
+    font-size: 14px;
+    line-height: 1.35;
+    height: 38px;
+    overflow: hidden;
+    margin: 0
+}
+
+.lc-price {
+    display: flex;
+    align-items: center;
+    gap: 8px
+}
+
+.lc-price-now {
+    color: #e21b1b;
+    font-weight: 700
+}
+
+.lc-price-old {
+    color: #7c8aa5;
+    text-decoration: line-through
+}
+
+/* Detail */
+.lc-detail-name {
+    margin-top: 0
+}
+
+.lc-detail-price .lc-price-now {
+    font-size: 24px
+}
+
+.lc-off {
+    color: #fff;
+    background: #ff3b30;
+    border-radius: 6px;
+    padding: 2px 8px;
+    margin-left: 8px
+}
+
+/* Footer */
+.lc-footer {
+    margin-top: 30px;
+    background: #0a1e44;
+    color: #cfe0ff;
+    padding: 28px 0
+}
+
+    .lc-footer h4 {
+        color: #fff
+    }
+
+.lc-copy {
+    margin-top: 16px;
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding-top: 10px;
+    text-align: center
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+    a:hover {
+        color: #007bff;
+    }
+
+.card {
+    border-radius: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+.carousel img {
+    max-height: 380px;
+    object-fit: cover;
+}
+header img {
+    display: block;
+    max-height: 55px;
+    object-fit: contain;
+}
+
+header .container {
+    align-items: center;
+}
+/* Style cho Card Bệnh */
+/* --- CSS CARD BỆNH (KIỂU TOOLTIP BONG BÓNG) --- */
+.disease-card {
+    position: relative;
+    /* QUAN TRỌNG: Phải là visible để bong bóng bay ra ngoài khung được */
+    overflow: visible !important;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    z-index: 1; /* Mặc định lớp thấp */
+}
+
+    /* Khi rê chuột, đưa card này lên lớp cao nhất để bong bóng đè lên các ô khác */
+    .disease-card:hover {
+        transform: translateY(-3px);
+        border-color: #0d6efd;
+        z-index: 100;
+    }
+
+.disease-content {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+}
+
+.disease-img {
+    width: 70px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.disease-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: #0d6efd;
+    line-height: 1.3;
+}
+
+/* --- KHUNG NỘI DUNG (BONG BÓNG) --- */
+.disease-info {
+    /* Ẩn đi khi chưa hover */
+    opacity: 0;
+    visibility: hidden;
+    /* Vị trí: Bay lên trên đầu card */
+    position: absolute;
+    bottom: 105%; /* Nằm phía trên cách card 5% */
+    left: 50%; /* Căn giữa */
+    transform: translateX(-50%) translateY(10px); /* Hiệu ứng trượt từ dưới lên */
+    /* Kích thước và giao diện */
+    width: 240px; /* Độ rộng bong bóng (rộng hơn card cũng được) */
+    background-color: #333; /* Màu nền bong bóng (Màu tối cho dễ đọc) */
+    color: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    pointer-events: none; /* Để chuột không bị vướng vào bong bóng */
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Hiệu ứng nảy */
+}
+
+    /* Mũi tên tam giác chỉ xuống dưới */
+    .disease-info::after {
+        content: "";
+        position: absolute;
+        top: 100%; /* Nằm ngay dưới đáy bong bóng */
+        left: 50%;
+        margin-left: -6px;
+        border-width: 6px;
+        border-style: solid;
+        border-color: #333 transparent transparent transparent; /* Màu tam giác trùng màu nền */
+    }
+
+/* HIỆN BONG BÓNG KHI HOVER */
+.disease-card:hover .disease-info {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0); /* Bay về vị trí chuẩn */
+}

@@ -1,0 +1,67 @@
+﻿@model PharmacyStore.Models.Product
+@{
+    Layout = null; // partial nạp vào modal nên KHÔNG dùng layout
+    var img = string.IsNullOrWhiteSpace(Model.ImageUrl) ? "no-image.png" : Model.ImageUrl;
+}
+
+<div class="row g-4">
+    <div class="col-md-5">
+        <img class="img-fluid rounded"
+             src="@Url.Action("Img","Home", new { file = img })"
+             alt="@Model.Name" />
+    </div>
+
+    <div class="col-md-7">
+        <h4 class="mb-2">@Model.Name</h4>
+        <div class="h5 text-danger mb-3">@String.Format("{0:0,0} đ", Model.Price)</div>
+
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <label class="me-2">Số lượng:</label>
+            <div class="input-group" style="max-width: 160px;">
+                <button class="btn btn-outline-secondary" type="button" data-qv-minus>-</button>
+                <input class="form-control text-center" type="number" value="1" min="1" id="qvQty" />
+                <button class="btn btn-outline-secondary" type="button" data-qv-plus>+</button>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2">
+            <a class="btn btn-primary"
+               data-qv-add
+               href="@Url.Action("Add","Cart", new { id = Model.ProductId, qty = 1, returnUrl = Request.UrlReferrer })">
+                Thêm vào giỏ
+            </a>
+
+            <a class="btn btn-outline-primary"
+               data-qv-buy
+               href="@Url.Action("Add","Cart", new { id = Model.ProductId, qty = 1, returnUrl = Url.Action("Index","Cart") })">
+                Mua ngay
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // +/- quantity trong Quick View
+    (function () {
+        const qty = document.getElementById('qvQty');
+        document.querySelector('[data-qv-minus]')?.addEventListener('click', () => {
+            qty.value = Math.max(1, parseInt(qty.value || 1) - 1);
+            syncQtyToLinks();
+        });
+        document.querySelector('[data-qv-plus]')?.addEventListener('click', () => {
+            qty.value = Math.max(1, parseInt(qty.value || 1) + 1);
+            syncQtyToLinks();
+        });
+        qty.addEventListener('input', syncQtyToLinks);
+
+        function syncQtyToLinks() {
+            const q = Math.max(1, parseInt(qty.value || 1));
+            document.querySelectorAll('[data-qv-add],[data-qv-buy]').forEach(a => {
+                const url = new URL(a.href, window.location.origin);
+                url.searchParams.set('qty', q);
+                a.href = url.toString();
+            });
+        }
+        syncQtyToLinks();
+    })();
+</script>

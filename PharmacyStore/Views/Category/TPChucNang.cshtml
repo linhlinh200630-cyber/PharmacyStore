@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Thực phẩm chức năng";
+}
+
+<h2 class="mt-4 mb-4 fw-bold">Thực phẩm chức năng</h2>
+
+<style>
+    .tp-box {
+        background: #fff;
+        border-radius: 14px;
+        padding: 18px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+        .tp-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .tp-box img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+    .tp-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #007bff;
+        margin: 0;
+    }
+</style>
+
+<div class="container">
+
+    <div class="row g-4">
+
+        <!-- Vitamin -->
+        <div class="col-md-6">
+            <a href="#" class="text-decoration-none">
+                <div class="tp-box">
+                    <img src="https://cdn.tgdd.vn/2021/05/CookProduct/vitamin-c-la-gi-1-1200x676.jpg" />
+                    <p class="tp-title">Vitamin tổng hợp</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Khoáng chất -->
+        <div class="col-md-6">
+            <a href="#" class="text-decoration-none">
+                <div class="tp-box">
+                    <img src="https://cdn.tgdd.vn/2021/07/CookProduct/khoang-chat-la-gi-1-1200x676.jpg" />
+                    <p class="tp-title">Khoáng chất</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Tăng sức đề kháng -->
+        <div class="col-md-6">
+            <a href="#" class="text-decoration-none">
+                <div class="tp-box">
+                    <img src="https://cdn.tgdd.vn/2020/12/CookProduct/ham-luong-tang-suc-de-khang-1200x676.jpg" />
+                    <p class="tp-title">Tăng sức đề kháng</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Hỗ trợ tiêu hóa -->
+        <div class="col-md-6">
+            <a href="#" class="text-decoration-none">
+                <div class="tp-box">
+                    <img src="https://cdn.tgdd.vn/2020/05/CookProduct/he-tieu-hoa-la-gi-1-1200x676.jpg" />
+                    <p class="tp-title">Hỗ trợ tiêu hóa</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Xương khớp -->
+        <div class="col-md-6">
+            <a href="#" class="text-decoration-none">
+                <div class="tp-box">
+                    <img src="https://cdn.tgdd.vn/2021/05/CookProduct/xuong-khop-1200x676.jpg" />
+                    <p class="tp-title">Hỗ trợ xương khớp</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Tim mạch -->
+        <div class="col-md-6">
+            <a href="#" class="text-decoration-none">
+                <div class="tp-box">
+                    <img src="https://cdn.tgdd.vn/2021/02/CookProduct/tim-mach-1-1200x676.jpg" />
+                    <p class="tp-title">Hỗ trợ tim mạch</p>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+</div>

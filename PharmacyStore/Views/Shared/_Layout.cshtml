@@ -1,0 +1,320 @@
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewBag.Title - Pharmacy Store</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+
+    <link href="~/Content/site.css" rel="stylesheet" />
+
+    <!-- ================= STYLE POPUP DANH MỤC ================= -->
+    <style>
+        /* NÚT DANH MỤC RÕ RÀNG */
+        .menu-btn {
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            width: 210px;
+            color: #000 !important; /* CHỮ HIỂN THỊ RÕ */
+        }
+
+            .menu-btn i {
+                color: #000 !important;
+                font-size: 22px;
+            }
+
+        .category-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.25);
+            display: none;
+            z-index: 9999;
+        }
+
+        .category-popup {
+            background: #fff;
+            width: 90%;
+            max-width: 1200px;
+            height: 100%;
+            display: flex;
+            position: relative;
+            transform: translateX(-100%);
+            transition: transform .3s ease;
+        }
+
+            .category-popup.show {
+                transform: translateX(0);
+            }
+
+        .close-popup {
+            position: absolute;
+            right: 25px;
+            top: 20px;
+            font-size: 34px;
+            cursor: pointer;
+        }
+
+        .cat-left {
+            width: 30%;
+            border-right: 1px solid #eee;
+            padding: 25px;
+        }
+
+        .cat-item {
+            font-size: 19px;
+            padding: 12px 10px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+            .cat-item.active {
+                background: #e8f1ff;
+                font-weight: bold;
+            }
+
+        .cat-right {
+            width: 70%;
+            padding: 30px;
+        }
+
+        .cat-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 35px;
+            text-align: center;
+        }
+
+        .subcat img {
+            width: 110px;
+            height: 110px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ====================== HEADER ====================== -->
+    <header class="bg-primary text-white py-2">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <div>
+                <a href="@Url.Action("Index","Home")" class="d-flex align-items-center">
+                    <img src="@Url.Action("Img","Home", new { file = "PS.jpg" })"
+                         style="height:55px;width:auto;object-fit:contain;" />
+                </a>
+            </div>
+
+            <div class="w-50 mx-3">
+                <input type="text" class="form-control"
+                       placeholder="Tìm thuốc, vitamin, thực phẩm chức năng..." />
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+                @if (Request.IsAuthenticated)
+                {
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle"
+                                type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i>
+                            @User.Identity.GetUserName()
+                        </button>
+
+                        <ul class="dropdown-menu">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li>
+                                    <a class="dropdown-item text-danger fw-bold"
+                                       href="@Url.Action("Index", "Products")">
+                                        Quản trị hệ thống
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider" /></li>
+                            }
+
+                            <li>
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <a class="dropdown-item"
+                                       href="javascript:document.getElementById('logoutForm').submit()">
+                                        Đăng xuất
+                                    </a>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login","Account")" class="btn btn-outline-light">
+                        <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+                    </a>
+                }
+
+                @{ Html.RenderAction("_CartSummary", "Cart"); }
+            </div>
+        </div>
+
+        <!-- ========= MENU DANH MỤC + NAVIGATION ========= -->
+        <div class="container mt-3 d-flex align-items-center gap-4">
+            <div id="openMenu" class="menu-btn">
+                <i class="bi bi-list"></i> Danh mục <i class="bi bi-chevron-down ms-auto"></i>
+            </div>
+
+            <div class="text-white fw-semibold d-flex gap-4 fs-5">
+                <a href="@Url.Action("Thuoc", "Category")"
+                   class="text-white fs-5"
+                   style="text-decoration:none;">
+                    Thuốc
+                </a>
+
+                <a href="@Url.Action("Tracuubenh", "Category")"
+                   class="text-white fs-5"
+                   style="text-decoration:none;">
+                    Tra cứu bệnh
+                </a>
+
+                <a href="@Url.Action("TPChucNang", "Category")"
+                   class="text-white fs-5" style="text-decoration:none;">
+                    Thực phẩm chức năng
+                </a>
+
+                <a href="@Url.Action("ChamSocCaNhan", "Category")"
+                   class="text-white fs-5" style="text-decoration:none;">
+                    Chăm sóc cá nhân
+                </a>
+
+                <a href="@Url.Action("ThietBiYTe", "Category")"
+                   class="text-white fs-5" style="text-decoration:none;">
+                    Thiết bị y tế
+                </a>
+
+                <a href="@Url.Action("TiemChung","Category")"
+                   class="text-white fs-5" style="text-decoration:none;">
+                    Tiêm chủng
+                </a>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================== POPUP DANH MỤC ====================== -->
+    <div id="catOverlay" class="category-overlay">
+        <div class="category-popup" id="popupBox">
+
+            <span id="closeMenu" class="close-popup">&times;</span>
+
+            <!-- LEFT -->
+            <div class="cat-left">
+                <div class="cat-item active" data-cat="thuoc">Thuốc</div>
+                <div class="cat-item" data-cat="tpchucnang">Thực phẩm chức năng</div>
+                <div class="cat-item" data-cat="duocmypham">Dược mỹ phẩm</div>
+                <div class="cat-item" data-cat="cscanhan">Chăm sóc cá nhân</div>
+                <div class="cat-item" data-cat="thietbiyte">Thiết bị y tế</div>
+                <div class="cat-item" data-cat="tiemchung">Tiêm chủng</div>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="cat-right">
+                <h3 id="rightTitle" class="cat-title">Thuốc</h3>
+
+                <div id="rightGrid" class="cat-grid">
+                    <div class="subcat"><img src="https://via.placeholder.com/110"><p>Thuốc không kê đơn</p></div>
+                    <div class="subcat"><img src="https://via.placeholder.com/110"><p>Thuốc kê đơn</p></div>
+                    <div class="subcat"><img src="https://via.placeholder.com/110"><p>Thuốc khác</p></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ====================== BODY ====================== -->
+    <main class="container mt-4" style="min-height: 600px;">
+        @RenderBody()
+    </main>
+
+    <footer class="bg-primary text-white py-4 mt-5 text-center">
+        <p class="mb-1 fw-bold">© 2025 Đồ án lập trình web Nhóm 34</p>
+        <p>Hotline: 1900 xxxx | Email: support@pharmacy.com</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- =============== POPUP SCRIPT =============== -->
+    <script>
+        const overlay = document.getElementById("catOverlay");
+        const popup = document.getElementById("popupBox");
+        const openMenu = document.getElementById("openMenu");
+        const closeMenu = document.getElementById("closeMenu");
+
+        openMenu.onclick = () => {
+            overlay.style.display = "block";
+            setTimeout(() => popup.classList.add("show"), 10);
+        };
+
+        closeMenu.onclick = () => {
+            popup.classList.remove("show");
+            setTimeout(() => overlay.style.display = "none", 300);
+        };
+
+        overlay.onclick = (e) => {
+            if (e.target === overlay) {
+                popup.classList.remove("show");
+                setTimeout(() => overlay.style.display = "none", 300);
+            }
+        };
+
+        /* ======= DANH MỤC ======= */
+        const items = document.querySelectorAll(".cat-item");
+        const rightTitle = document.getElementById("rightTitle");
+        const rightGrid = document.getElementById("rightGrid");
+
+        const DATA = {
+            thuoc: ["Thuốc không kê đơn", "Thuốc kê đơn", "Thuốc khác"],
+            tpchucnang: ["Vitamin", "Khoáng chất", "Hỗ trợ tiêu hóa"],
+            duocmypham: ["Chăm sóc da", "Dưỡng tóc", "Dược mỹ phẩm Spa"],
+            cscanhan: ["Sữa tắm", "Dầu gội", "Khử mùi"],
+            thietbiyte: ["Máy đo huyết áp", "Nhiệt kế", "Máy xông mũi"],
+            tiemchung: ["Vaccine trẻ em", "Vaccine người lớn", "Vaccine dịch vụ"]
+        };
+
+        items.forEach(i => {
+            i.onclick = () => {
+                document.querySelector(".cat-item.active")?.classList.remove("active");
+                i.classList.add("active");
+
+                rightTitle.innerText = i.innerText;
+
+                rightGrid.innerHTML = DATA[i.dataset.cat].map(t =>
+                    `<div class="subcat">
+                                <img src="https://via.placeholder.com/110">
+                                <p>${t}</p>
+                            </div>`
+                ).join("");
+            };
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

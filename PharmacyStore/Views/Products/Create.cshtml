@@ -1,0 +1,38 @@
+﻿@model PharmacyStore.Models.Product
+@{
+    ViewBag.Title = "Thêm sản phẩm";
+}
+<h2>Thêm sản phẩm</h2>
+@using (Html.BeginForm("Create", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CategoryId, "Danh mục")
+        @Html.DropDownList("CategoryId", null, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Price)
+        @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number", step = "1000" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Stock)
+        @Html.TextBoxFor(m => m.Stock, new { @class = "form-control", type = "number" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description)
+        @Html.TextAreaFor(m => m.Description, 5, 50, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Ảnh sản phẩm</label>
+        <input type="file" name="Upload" accept="image/*" class="form-control" />
+    </div>
+
+    <button class="btn btn-success">Lưu</button>
+    @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn btn-default" })
+}
