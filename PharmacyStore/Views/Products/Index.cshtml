@@ -31,7 +31,35 @@
         <div class="row lc-product-grid">
             @foreach (var p in Model ?? Enumerable.Empty<PharmacyStore.Models.Product>())
             {
-                @Html.Partial("_ProductCard", p)
+                <div class="col-md-3 col-sm-4 col-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+
+                        <a href="@Url.Action("Details", "Products", new { id = p.ProductId })"
+                           class="text-decoration-none text-dark">
+                            <img src="@p.ImageUrl" class="card-img-top img-fluid" alt="@p.Name" />
+                            <div class="card-body">
+                                <h6>@p.Name</h6>
+                                <p class="fw-bold text-danger">@p.Price.ToString("N0") đ</p>
+                            </div>
+                        </a>
+
+                        @* 👉 Hiện nút Sửa / Xóa cho Admin *@
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="p-2 d-flex gap-2">
+                                <a class="btn btn-warning btn-sm w-50"
+                                   href="@Url.Action("Edit", "Products", new { id = p.ProductId })">
+                                    Sửa
+                                </a>
+
+                                <a class="btn btn-danger btn-sm w-50"
+                                   href="@Url.Action("Delete", "Products", new { id = p.ProductId })">
+                                    Xóa
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
             }
         </div>
     </section>

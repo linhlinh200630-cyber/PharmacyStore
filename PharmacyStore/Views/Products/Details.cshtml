@@ -8,9 +8,16 @@
 
 <div class="row lc-detail">
     <div class="col-sm-5">
+        @{
+            var imgPath = string.IsNullOrEmpty(Model.ImageUrl)
+                ? Url.Content("~/Content/img/no-image.png")
+                : Url.Content("~/" + Model.ImageUrl.TrimStart('~', '/'));
+        }
+
         <img class="img-responsive lc-detail-img"
-             src="@Model.ImageUrl"
+             src="@imgPath"
              alt="@Model.Name" />
+
     </div>
         
     <div class="col-sm-7">
@@ -25,20 +32,31 @@
             <li>Quy cách: @Model.Unit</li>
             <li>Mã SP: @Model.ProductId</li>
             <li>Tình trạng: <b>Còn hàng</b></li>
-        </ul>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-warning me-2"
+                   href="@Url.Action("Edit", "Products", new { id = Model.ProductId })">
+                    Sửa
+                </a>
 
-        <div class="lc-detail-actions">
-            <a class="btn btn-lg btn-primary"
-               href="@Url.Action("Add", "Cart", new { id = Model.ProductId, qty = 1, returnUrl = Request.RawUrl })">
-                Chọn mua
-            </a>
+                <a class="btn btn-danger"
+                   href="@Url.Action("Delete", "Products", new { id = Model.ProductId })">
+                    Xóa
+                </a>
+            }
+            else
+            {
+                <!-- nút Chọn mua cho user thường -->
+            }
+
+
 
 
             <a class="btn btn-default"
                href="@Url.Action("Index", "Products")">
                 Xem thêm sản phẩm
             </a>
-        </div>
+</div>
         <div class="lc-detail-desc">
             <h4>Công dụng</h4>
             <p>@Html.Raw(Model.Description ?? "Đang cập nhật...")</p>

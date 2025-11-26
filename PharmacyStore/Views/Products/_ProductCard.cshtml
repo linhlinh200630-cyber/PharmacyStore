@@ -8,7 +8,18 @@
            class="text-decoration-none text-dark"
            style="display:block; cursor:pointer;">
 
-            <img src="@Model.ImageUrl" class="card-img-top img-fluid" alt="@Model.Name" />
+            @{
+                // Nếu ImageUrl trong DB là kiểu: "Content/img/top/tenfile.jpg"
+                // thì mình thêm "~/" ở đầu để nó thành đường dẫn gốc của web.
+                var imgPath = string.IsNullOrEmpty(Model.ImageUrl)
+                    ? Url.Content("~/Content/img/no-image.png")    // ảnh dự phòng
+                    : Url.Content("~/" + Model.ImageUrl.TrimStart('~', '/'));
+            }
+
+            <img src="@imgPath"
+                 class="card-img-top img-fluid"
+                 alt="@Model.Name" />
+
 
             <div class="card-body">
                 <h6 class="card-title">@Model.Name</h6>

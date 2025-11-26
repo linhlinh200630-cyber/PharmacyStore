@@ -110,24 +110,29 @@ namespace PharmacyStore.Controllers
             return View(product);
         }
 
-        [Authorize(Roles = "Admin")] // <--- Dán vào đây
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
-            // ... code cũ giữ nguyên ...
-            var p = db.Products.Find(id); if (p == null) return HttpNotFound();
-            return View(p);
+            var p = db.Products.Find(id);
+            if (p == null) return HttpNotFound();
+
+            return View(p);   // sẽ render Views/Products/Delete.cshtml
         }
 
-        [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")] // <--- Dán vào đây
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
-            // ... code cũ giữ nguyên ...
             var p = db.Products.Find(id);
+            if (p == null) return HttpNotFound();
+
             db.Products.Remove(p);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
+
 
         // Hàm này là nội bộ, không cần Authorize vì user không gọi trực tiếp được
         private string SaveImage(HttpPostedFileBase file)
